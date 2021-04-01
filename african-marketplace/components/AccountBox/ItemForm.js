@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { BoldLink, BoxContainer, FormContainer, Input, MutedLink, SubmitButton, Label } from './common'
+import { HeaderText, SmallText, BoxContainer, FormContainer, Input, SubmitButton, Label } from './Styling'
 import { Marginer } from '../marginer'
 
 export default function ItemForm(props) {
