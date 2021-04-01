@@ -2,11 +2,24 @@ import React, { useState, useEffect } from 'react'
 import * as yup from 'yup'
 import axios from 'axios'
 
-import ItemForm from './ItemForm'
+import styled from 'styled-components'
+
+import { AccountBox } from './components/AccountBox';
 
 import { formSchema } from './components/validation/formSchema'
 
+const AppStyle = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;`;
+
 const initialFormValues = {
+  username: '',
+  password: '',
+  department: '',
   itemName: '',
   description: '',
   price: '',
@@ -15,6 +28,9 @@ const initialFormValues = {
 }
 
 const initialFormErrors = {
+  username: '',
+  password: '',
+  department: '',
   itemName: '',
   description: '',
   price: '',
@@ -22,20 +38,62 @@ const initialFormErrors = {
   category: ''
 }
 
+const initialUsers = [];
 const initialItems = []
 const initialDisabled = true
 
 export default function App() {
 
+  const [users, setUsers] = useState(initialUsers);
   const [items, setItems] = useState(initialItems)
   const [formValues, setFormValues] = useState(initialFormValues)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
-  // const [disabled, setDisabled] = useState(initialDisabled) 
+  const [disabled, setDisabled] = useState(initialDisabled) 
+
+  // Users component code
+  const getUsers = () => {
+    axios.get('#').then((res) => {
+      setUsers(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+  const postNewUser = (newUser) => {
+    axios.post('#', newUser).then((res) => {
+      setUsers([res.data, ...users]);
+      setFormValues(initialFormValues);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+
+  // Items component code
+  const getItems = () => {
+    axios.get('#')
+      .then((res) => {
+        setItems(res.data);
+      })
+      .catch((err) => {
+        console.log(err)
+    })
+  }
+  const postNewItem = (newItem) => {
+    axios.post('#', newItem)
+      .then((res) => {
+        setItems([res.data, ...items])
+        setFormValues(initialFormValues);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const updateForm = (event) => {
     // const { name, value, type, checked} = event.target
     // const updatedInfo = type === 'checkbox' ? checked: value;
-    const { name, value, type } = event.target
+    const { name, value, type, username } = event.target
     setFormValues({...formValues, [name]: updatedInfo})
     yup.reach(formSchema, name)
       .validate(value)
@@ -47,6 +105,14 @@ export default function App() {
     
     event.preventDefault()
     
+    const newUser = {
+      username: formValues.username.trim(),
+      password: formValues.password.trim(),
+      department: ['buyer', 'seller'].filter((dept) => formValues[dept]
+      ),
+    };
+    postNewUser(newUser)
+
     const newItem = {
     itemName: formValues.name.trim(),
     description: formValues.description.trim(),
@@ -55,23 +121,30 @@ export default function App() {
     category: formValues.category.trim()
     }
   }
+  postNewItem(newItem)
 
   useEffect(() => {
     formSchema.isValid(formValues)
       .then(valid => setDisabled(!valid))
-  })
+  }, [formValues])
 
-  //to see data
+  // to see data
   // useEffect(() => {
   //   console.log(items)
   // }, [items])
-  
+  // useEffect(() => {
+  //   getUsers();
+  // }, []);
    
   return (
-    <div className="App">
-      <h1>Items Form</h1>
-      <h3>Add Items</h3>
-
+    <AppStyle>
+      <AccountBox 
+        values={formValues}
+        change={updateForm}
+        submit={submitForm}
+        disabled={disabled}
+        errors={errors}
+      />
       <ItemForm 
         formValues={formValues}
         updateForm={updateForm}
@@ -79,6 +152,6 @@ export default function App() {
         disabled={disabled}
         errors={errors}
       />
-    </div>
+    </AppStyle>
   );
 }

@@ -1,54 +1,60 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import { HeaderText, SmallText, BoxContainer, FormContainer, Input, SubmitButton, Label } from './Styling'
+import { Marginer } from '../marginer'
 
 export default function ItemForm(props) {
 
     const { formValues, updateForm, submitForm, disabled} = props
     return(
-        <form className='form-container' onSubmit={submitForm}>
+    <BoxContainer>
+        <FormContainer className='form-container' onSubmit={submitForm}>
+            <HeaderText>Items Form</HeaderText>
+            <SmallText>Add Items</SmallText>
             <div className='form-group inputs'>
-                <label>Item Name
-                    <input
+                <Label>Item Name
+                    <Input
                         type='text'
                         value={formValues.itemName}
                         placeholder='Item Name'
                         onChange={updateForm}
                     />
-                </label>
-                <label>Description
-                    <input
+                </Label>
+                <Label>Description
+                    <Input
                         type='text'
                         value={formValues.description}
                         placeholder='Description'
                         onChange={updateForm}
                     />
-                </label>
-                <label>Price
-                    <input
+                </Label>
+                <Label>Price
+                    <Input
                         type='text'
                         value={formValues.price}
                         placeholder='Price'
                         onChange={updateForm}
                     />
-                </label>
-                <label>Location
-                    <input
+                </Label>
+                <Label>Location
+                    <Input
                         type='text'
                         value={formValues.location}
                         placeholder='Location'
                         onChange={updateForm}
                     />
-                </label>
-                <label>Category
-                    <input
+                </Label>
+                <Label>Category
+                    <Input
                         type='text'
                         value={formValues.category}
                         placeholder='Category'
                         onChange={updateForm}
                     />
-                </label>
+                </Label>
             </div>
             <div className='form-group submit'>
-                <button disabled={disabled}>Submit Item</button>
+                <Marginer direction="vertical" margin={5} />
+                <SubmitButton disabled={disabled}>Submit Item</SubmitButton>
 
                 <div className='errors'>
                     <div>{errors.itemName}</div>
@@ -58,6 +64,7 @@ export default function ItemForm(props) {
                     <div>{errors.category}</div>
                 </div>
             </div>
-        </form>
+        </FormContainer>
+    </BoxContainer>
     )
 }
