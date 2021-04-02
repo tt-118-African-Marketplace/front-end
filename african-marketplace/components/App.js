@@ -52,7 +52,7 @@ export default function App() {
 
   // Users component code
   const getUsers = () => {
-    axios.get('#').then((res) => {
+    axios.get('https://african-marketplace-tt118.herokuapp.com/api/users').then((res) => {
       setUsers(res.data);
     })
     .catch((err) => {
@@ -60,7 +60,7 @@ export default function App() {
     });
   };
   const postNewUser = (newUser) => {
-    axios.post('#', newUser).then((res) => {
+    axios.post('https://african-marketplace-tt118.herokuapp.com/api/users', newUser).then((res) => {
       setUsers([res.data, ...users]);
       setFormValues(initialFormValues);
     })
@@ -71,7 +71,7 @@ export default function App() {
 
   // Items component code
   const getItems = () => {
-    axios.get('#')
+    axios.get('https://african-marketplace-tt118.herokuapp.com/api/items')
       .then((res) => {
         setItems(res.data);
       })
@@ -80,7 +80,7 @@ export default function App() {
     })
   }
   const postNewItem = (newItem) => {
-    axios.post('#', newItem)
+    axios.post('https://african-marketplace-tt118.herokuapp.com/api/items/additem', newItem)
       .then((res) => {
         setItems([res.data, ...items])
         setFormValues(initialFormValues);
